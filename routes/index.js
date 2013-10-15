@@ -20,8 +20,14 @@ exports.index = function(req, res){
         });
     } else if (sns.Type == 'Notification') {
         var message = '';
+        var color = 'yellow';
         if (sns.Subject !== undefined) {
             message += '<b>' + sns.Subject + '</b>';
+            if (sns.Subject.match(/^OK/)) {
+                color = 'green';
+            } else if (sns.Subject.match(/^ALARM/)) {
+                color = 'red';
+            }
         }
         if (sns.Message !== undefined) {
             try {
@@ -47,6 +53,7 @@ exports.index = function(req, res){
                     'from=' + process.env.HIPCHAT_FROM_NAME + '&' +
                     'message=' + message + '&' +
                     'notify=1&' +
+                    'color=' + color + '&' +
                     'format=json';
 
         request(hipchatUrl, function (err, result, body) {
