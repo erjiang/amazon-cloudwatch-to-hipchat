@@ -20,11 +20,26 @@ exports.index = function(req, res){
         });
     } else if (sns.Type == 'Notification') {
         var message = '';
-        if (sns.Subject === undefined) {
-            message = JSON.stringify(sns.Message);
-        } else {
-            message = sns.Subject;
+        if (sns.Subject !== undefined) {
+            message += '<b>' + sns.Subject + '</b>';
         }
+        if (sns.Message !== undefined) {
+            try {
+                var messages = JSON.parse(sns.Message);
+                if (typeof(messages) === 'object') {
+                    for (var key in messages) {
+                        var val = messages[key];
+                        if (typeof(val) === 'object') { continue; }
+                        message += "\n<b>" + key.toString() + ":</b> " + val.toString();
+                    }
+                } else {
+                    message += messages.toString();
+                }
+            } catch(error) {
+                message += sns.Message;
+            }
+        }
+        message = message.replace(/\n/g, '<br>');
 
         var hipchatUrl = 'https://api.hipchat.com/v1/rooms/message?' +
                     'auth_token=' + process.env.HIPCHAT_API_TOKEN + '&' +
