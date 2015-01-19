@@ -21,6 +21,13 @@ exports.index = function(req, res){
     } else if (sns.Type == 'Notification') {
         var message = '';
         var color = 'yellow';
+        // only print out these fields from the message
+        var field_whitelist = [
+            'NewStateReason',
+            //'StateChangeTime',
+            //'Region',
+            'OldStateValue'
+        ];
         if (sns.Subject !== undefined) {
             message += '<b>' + sns.Subject + '</b>';
             if (sns.Subject.match(/^OK/)) {
@@ -34,6 +41,8 @@ exports.index = function(req, res){
                 var messages = JSON.parse(sns.Message);
                 if (typeof(messages) === 'object') {
                     for (var key in messages) {
+                        // skip fields that aren't in the whitelist
+                        if (field_whitelist.indexOf(key)) === -1) { continue; }
                         var val = messages[key];
                         if (typeof(val) === 'object') { continue; }
                         message += "\n<b>" + key.toString() + ":</b> " + val.toString();
