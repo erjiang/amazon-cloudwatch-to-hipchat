@@ -24,6 +24,9 @@ exports.index = function(req, res){
         // only print out these fields from the message
         var field_whitelist = [
             'NewStateReason',
+            'Event Message',
+            'Event Source',
+            'Event ID',
             //'StateChangeTime',
             //'Region',
             'OldStateValue'
