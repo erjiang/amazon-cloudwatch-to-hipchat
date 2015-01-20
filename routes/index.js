@@ -45,19 +45,18 @@ exports.index = function(req, res){
                 if (typeof(messages) === 'object') {
                     for (var key in messages) {
                         // skip fields that aren't in the whitelist
-                        if (field_whitelist.indexOf(key)) === -1) { continue; }
+                        if (field_whitelist.indexOf(key) === -1) { continue; }
                         var val = messages[key];
                         if (typeof(val) === 'object') { continue; }
-                        message += "\n<b>" + key.toString() + ":</b> " + val.toString();
+                        message += "<br><b>" + key.toString() + ":</b> " + val.toString();
                     }
                 } else {
-                    message += messages.toString();
+                    message += ("<br>" + messages.toString());
                 }
             } catch(error) {
-                message += sns.Message;
+                message += ("<br>" + sns.Message);
             }
         }
-        message = message.replace(/\n/g, '<br>');
 
         var hipchatUrl = 'https://api.hipchat.com/v1/rooms/message?' +
                     'auth_token=' + process.env.HIPCHAT_API_TOKEN + '&' +
