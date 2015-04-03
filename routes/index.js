@@ -26,7 +26,7 @@ exports.index = function(req, res){
             'NewStateReason',
             'Event Message',
             'Event Source',
-            'Event ID',
+            //'Event ID',
             //'StateChangeTime',
             //'Region',
             'OldStateValue'
